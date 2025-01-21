@@ -1,0 +1,47 @@
+:host {
+    --ion-background-color: #f4f5f8;
+  }
+
+  ion-header ion-toolbar {
+    --background: transparent;
+  }
+
+  ion-card {
+    margin: 16px 0;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .transaction-type-selector ion-segment {
+    --background: var(--ion-color-light);
+    border-radius: 12px;
+    margin: 8px 0;
+  }
+
+  .amount-input {
+    --background: transparent;
+    --border-color: transparent;
+    margin-top: 16px;
+  }
+
+  .amount-input ion-input {
+    font-size: 24px;
+    --padding-start: 0;
+  }
+
+  .category-select {
+    --background: transparent;
+    --border-color: transparent;
+    margin-top: 16px;
+  }
+
+  ion-select {
+    width: 100%;
+    max-width: 100%;
+    --padding-start: 0;
+  }
+
+  ion-button {
+    --border-radius: 12px;
+    margin: 8px 0;
+  }

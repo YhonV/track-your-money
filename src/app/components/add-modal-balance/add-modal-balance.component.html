@@ -1,0 +1,98 @@
+
+  <ion-header class="ion-no-border">
+    <ion-toolbar color="light">
+      <ion-title class="ion-text-center">New Transaction</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <ion-card>
+      <ion-card-content>
+        <div class="ion-padding-bottom">
+          <ion-item lines="none" class="transaction-type-selector">
+            <ion-segment [(ngModel)]="expense.transaction" color="primary">
+              <ion-segment-button value="income">
+                <ion-icon icon="arrow-down-outline"></ion-icon>
+                <ion-label>Income</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="spent">
+                <ion-icon icon="arrow-up-outline"></ion-icon>
+                <ion-label>Expense</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+
+            <div class="error-message" *ngIf="expense.transaction === ''">
+              <ion-text color="danger">Please select a transaction type</ion-text>
+            </div>
+          </ion-item>
+
+          <ion-item lines="none" class="amount-input">
+            <ion-label position="stacked">Amount</ion-label>
+            <ion-input 
+              type="number" 
+              [(ngModel)]="expense.amount" 
+              name="amount"
+              placeholder="0.00"
+              class="ion-text-large ion-margin-top"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item lines="none" class="category-select" *ngIf="expense.transaction === 'spent'">
+            <ion-label position="stacked">Category</ion-label>
+            <ion-select 
+              [(ngModel)]="expense.category" 
+              placeholder="Select category"
+              name="category"
+              interface="action-sheet"
+              class="ion-margin-top"
+            >
+              <ion-select-option value="food">
+                <ion-icon icon="restaurant-outline"></ion-icon> Food
+              </ion-select-option>
+              <ion-select-option value="transport">
+                <ion-icon icon="car-outline"></ion-icon> Transport
+              </ion-select-option>
+              <ion-select-option value="entertainment">
+                <ion-icon icon="game-controller-outline"></ion-icon> Entertainment
+              </ion-select-option>
+              <ion-select-option value="bills">
+                <ion-icon icon="receipt-outline"></ion-icon> Bills
+              </ion-select-option>
+              <ion-select-option value="education">
+                <ion-icon icon="school-outline"></ion-icon> Education
+              </ion-select-option>
+              <ion-select-option value="hospital">
+                <ion-icon icon="medical-outline"></ion-icon> Hospital
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="ion-padding">
+      <ion-button 
+      expand="block" 
+      (click)="save()"
+      class="ion-margin-bottom" 
+      [disabled]="!isValid()" 
+      color="tertiary"
+      id="headerAnchor">
+        Save Transaction
+      </ion-button>
+      <ion-button expand="block" fill="clear" (click)="cancel()">
+        Cancel
+      </ion-button>
+    </div>
+
+      <!-- Toast para mensaje de éxito -->
+      <ion-toast
+      trigger="headerAnchor"
+      position="top"
+      positionAnchor="header"
+      message="Hello World!"
+      duration="2000"
+      icon="globe"
+      color="tertiary"
+    ></ion-toast>
+  </ion-content>

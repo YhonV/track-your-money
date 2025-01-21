@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="dashboard-title">DASHBOARD</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content-wrapper">
+    <h1>Current Balance</h1>
+
+
+  <!-- Income Card -->
+  <ion-card class="balance-card">
+    <ion-card-header>
+      <ion-card-title>Income</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{income}}
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Spent Card -->
+  <ion-card class="balance-card">
+    <ion-card-header>
+      <ion-card-title>Spent</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{spent}}
+    </ion-card-content>
+  </ion-card>
+
+   <!-- Expenses Card -->
+   <ion-card class="expenses-card">
+    <ion-card-header>
+      <ion-card-title>Expences</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="full">
+        <ion-item>
+          <ion-icon name="cash-outline" slot="start"></ion-icon>
+          <ion-label>Item</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="cash-outline" slot="start"></ion-icon>
+          <ion-label>Item</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="cash-outline" slot="start"></ion-icon>
+          <ion-label>Item</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="cash-outline" slot="start"></ion-icon>
+          <ion-label>Item</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  </div>
+
+  <div class="d-flex-center">
+    <ion-button 
+      shape="round" 
+      fill="outline" 
+      color="tertiary" 
+      (click)="openModal()" 
+      id="present-alert">
+      <ion-icon name="add-circle-outline"></ion-icon>
+      Add
+    </ion-button>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+   <!-- Reemplazar el alert actual por: -->
+  <ion-alert
+    [isOpen]="isAlertOpen"
+    header="Warning!"
+    subHeader="Invalid amount"
+    message="You can't spend more than your income."
+    [buttons]="alertButtons"
+    (didDismiss)="setOpen(false)"
+  ></ion-alert>
+  </div>
+
+
+
+
+  </ion-content>
+
