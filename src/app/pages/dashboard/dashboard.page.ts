@@ -12,8 +12,7 @@ import { IonCard,
         IonIcon, 
         IonLabel, 
         IonButton, 
-        IonAlert,
-        IonToast } from '@ionic/angular/standalone';
+        IonAlert} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { cashOutline, addCircleOutline, globe } from 'ionicons/icons';
 import { AddModalBalanceComponent } from 'src/app/components/add-modal-balance/add-modal-balance.component';
@@ -41,8 +40,7 @@ import { ITransaction } from 'src/app/models/transaction.interface';
     IonIcon,
     IonLabel,
     IonButton,
-    IonAlert,
-    IonToast
+    IonAlert
   ]
 })
 export class DashboardPage implements OnInit{
