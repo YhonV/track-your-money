@@ -1,0 +1,21 @@
+.transaction-type-selector {
+    --background: var(--ion-color-light);
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .amount-input {
+    --background: var(--ion-color-light);
+    border-radius: 8px;
+    margin-bottom: 16px;
+  
+    ion-input {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+  
+  .category-select {
+    --background: var(--ion-color-light);
+    border-radius: 8px;
+  }

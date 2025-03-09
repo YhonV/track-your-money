@@ -1,23 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController } from '@ionic/angular';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { IonCard, 
-        IonCardContent,
-        IonCardHeader, 
-        IonCardTitle, 
-        IonList, 
-        IonItem, 
-        IonIcon, 
-        IonLabel, 
-        IonButton, 
-        IonAlert} from '@ionic/angular/standalone';
+import {
+      IonCard, 
+      IonCardContent,
+      IonCardHeader, 
+      IonCardTitle, 
+      IonList, 
+      IonItem, 
+      IonIcon, 
+      IonLabel, 
+      IonGrid,
+      IonRow,
+      IonCol,
+      IonNote,
+      IonFab,
+      IonFabButton} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { cashOutline, addCircleOutline, globe } from 'ionicons/icons';
-import { AddModalBalanceComponent } from 'src/app/components/add-modal-balance/add-modal-balance.component';
+import { cashOutline, addCircleOutline, add, walletOutline, alertOutline } from 'ionicons/icons';
 import { StorageService } from 'src/app/services/storageService/storage-service.service';
-import { ITransaction } from 'src/app/models/transaction.interface';
+import { Transaction } from 'src/app/models/interfaces';
+import { BehaviorSubject } from 'rxjs';
+import { AddtransactionComponent } from 'src/app/components/addtransaction/addtransaction.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -39,204 +45,130 @@ import { ITransaction } from 'src/app/models/transaction.interface';
     IonItem,
     IonIcon,
     IonLabel,
-    IonButton,
-    IonAlert
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonNote,
+    IonFab,
+    IonFabButton
   ]
 })
-export class DashboardPage implements OnInit{
+export class DashboardPage implements OnInit {
+  // Variables para almacenar datos de balance y transacciones
   income: number = 0;
-  spent: number = 0;
-  message: string = '';
-  error: boolean = false;
-  isAlertOpen = false;
-  public alertButtons = ['OK'];
-
+  expenses: number = 0;
+  balance: number = 0;
+  transactions: Transaction[] = [];
+  
   constructor(
-    private modalCtrl : ModalController,
-    private storageService : StorageService) {
-    addIcons({
-      'cash-outline': cashOutline,
-      'add-circle-outline': addCircleOutline,
-      'globe': globe
-    })
-   }
+    private modalCtrl: ModalController,
+    private storageService: StorageService,
+    private alertCtrl: AlertController,
+    private toastController: ToastController
+  ) {
+    addIcons({add,alertOutline,cashOutline,addCircleOutline,walletOutline});
+  }
 
   async ngOnInit() {
-    this.loadData();
+    await this.loadData();
+  }
+  
+  async ionViewWillEnter() {
+    await this.loadData();
   }
 
   private async loadData() {
     try {
-      // Cargar income
-      const savedIncome = await this.storageService.getName('income');
-      if (savedIncome) {
-        let transactions: ITransaction[] = [];
-        try {
-          const parsed = JSON.parse(savedIncome);
-          transactions = Array.isArray(parsed) ? parsed : [];
-          this.income = transactions.length > 0 ? 
-            transactions.reduce((acc, curr) => acc + curr.amount, 0) : 0;
-        } catch (e) {
-          console.error('Error parsing income:', e);
-          this.income = 0;
-        }
-      }
-  
-      // Cargar expenses
-      const savedExpenses = await this.storageService.getName('expenses');
-      if (savedExpenses) {
-        let transactions: ITransaction[] = [];
-        try {
-          const parsed = JSON.parse(savedExpenses);
-          transactions = Array.isArray(parsed) ? parsed : [];
-          this.spent = transactions.length > 0 ? 
-            transactions.reduce((acc, curr) => acc + curr.amount, 0) : 0;
-        } catch (e) {
-          console.error('Error parsing expenses:', e);
-          this.spent = 0;
-        }
-      }
+      // Cargar transacciones
+      this.transactions = await this.storageService.getTransactions();
+      
+      // Procesar transacciones para la visualización
+      this.transactions = this.transactions.map(t => ({
+        ...t,
+        amount: typeof t.amount === 'string' ? Number(t.amount) : t.amount,
+        date: new Date(t.date)
+      })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      
+      // Obtener balance
+      const balanceData = await this.storageService.getBalance();
+      this.income = balanceData.income;
+      this.expenses = balanceData.expenses;
+      this.balance = balanceData.total;
+      
+      console.log('Datos cargados:', {
+        income: this.income,
+        expenses: this.expenses,
+        balance: this.balance,
+        transactions: this.transactions.length
+      });
     } catch (error) {
-      console.error('Error loading data:', error);
-      this.income = 0;
-      this.spent = 0;
+      console.error('Error cargando datos:', error);
     }
   }
 
-  // Agregar método para manejar alert
-  setOpen(isOpen: boolean) {
-    this.isAlertOpen = isOpen;
-  }
-
-  async addIncome(data: any){
-      try {
-        let savedIncomes = await this.storageService.getName('income');
-        console.log('Saved incomes:', savedIncomes);
-        
-        // Asegurar que es un array
-        let incomes: ITransaction[] = [];
-        
-        if (savedIncomes) {
-          try {
-            const parsed = JSON.parse(savedIncomes);
-            incomes = Array.isArray(parsed) ? parsed : [];
-          } catch (e) {
-            console.error('Error parsing incomes:', e);
-            incomes = [];
-          }
-        }
-        
-        // Crear nueva transacción
-        const newTransaction: ITransaction = {
-          amount: data.amount,
-          transaction: data.transaction,
-          date: new Date().toISOString()
-        };
-        
-        incomes.push(newTransaction);
-        
-        await this.storageService.setName({
-          key: 'income',
-          value: JSON.stringify(incomes)
-        });
-        
-        this.income += data.amount;
-        await this.loadData(); // Recargar datos
-        
-      } catch (error) {
-        console.error('Error handling income:', error);
-      }
-  }
-
-  async addExpenses(data: any){
-      try {
-        // Validar saldo
-        if (data.amount > this.income) {
-          this.error = true;
-          this.setOpen(true);
-          return;
-        }
-    
-        // 1. Actualizar expenses
-        let savedExpenses = await this.storageService.getName('expenses');
-        let expenses: ITransaction[] = [];
-        
-        if (savedExpenses) {
-          try {
-            const parsed = JSON.parse(savedExpenses);
-            expenses = Array.isArray(parsed) ? parsed : [];
-          } catch (e) {
-            console.error('Error parsing expenses:', e);
-            expenses = [];
-          }
-        }
-    
-        const newExpense: ITransaction = {
-          amount: data.amount,
-          transaction: data.transaction,
-          category: data.category,
-          date: new Date().toISOString()
-        };
-    
-        expenses.push(newExpense);
-    
-        // 2. Actualizar income
-        let savedIncomes = await this.storageService.getName('income');
-        let incomes: ITransaction[] = [];
-        
-        if (savedIncomes) {
-          try {
-            const parsed = JSON.parse(savedIncomes);
-            incomes = Array.isArray(parsed) ? parsed : [];
-            // Actualizar último income
-            if (incomes.length > 0) {
-              incomes[incomes.length - 1].amount -= data.amount;
-            }
-          } catch (e) {
-            console.error('Error parsing incomes:', e);
-          }
-        }
-    
-        // 3. Guardar cambios
-        await Promise.all([
-          this.storageService.setName({
-            key: 'expenses',
-            value: JSON.stringify(expenses)
-          }),
-          this.storageService.setName({
-            key: 'income',
-            value: JSON.stringify(incomes)
-          })
-        ]);
-    
-        // 4. Actualizar vista
-        this.spent += data.amount;
-        this.income -= data.amount;
-        
-        await this.loadData();
-    
-      } catch (error) {
-        console.error('Error handling expense:', error);
-      }
-  }
-
-
-  async openModal() {
+  async openTransactionModal() {
     const modal = await this.modalCtrl.create({
-      component: AddModalBalanceComponent
+      component: AddtransactionComponent
     });
 
-    await modal.present();
+    modal.onDidDismiss().then(async (result) => {
+      if (result.data) {
+        await this.handleNewTransaction(result.data);
+      }
+    });
 
-    const { data } = await modal.onWillDismiss();
-    console.log(`Data recibida ${JSON.stringify(data)}`)
+    return await modal.present();
+  }
 
-    if(data === null){
-      return;
+  private async handleNewTransaction(transaction: Transaction) {
+    try {
+      // Verificar fondos suficientes
+      if (transaction.type === 'expense') {
+        const currentBalance = await this.storageService.getBalance();
+        const transactionAmount = typeof transaction.amount === 'string' ? 
+          Number(transaction.amount) : transaction.amount;
+          
+        if (transactionAmount > currentBalance.total) {
+          await this.showErrorAlert();
+          return;
+        }
+      }
+
+      // Guardar la transacción
+      await this.storageService.saveTransactions(transaction);
+      
+      // Recargar datos
+      await this.loadData();
+      
+      // Mostrar confirmación
+      await this.showSuccessToast();
+    } catch (error) {
+      console.error('Error al manejar transacción:', error);
+      await this.showErrorAlert();
     }
-    if(data.transaction === 'income'){
-      this.addIncome(data);
-    } else{
-      this.addExpenses(data)
-    }}
+  }
+
+  private async showErrorAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Warning!!',
+      subHeader: 'Invalid Amount',
+      message: 'You can\'t spend more than your balance',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  private async showSuccessToast() {
+    const toast = await this.toastController.create({
+      header: 'Transaction saved successfully',
+      duration: 2000,
+      position: 'top',
+      color: 'success'
+    });
+    await toast.present();
+  }
+
+  async cleanTransactions() {
+    this.storageService.clearStorage();
+  }
 }

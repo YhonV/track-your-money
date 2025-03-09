@@ -1,0 +1,91 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Nueva Transacción</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="save()" #transactionForm="ngForm">
+    <ion-card>
+      <ion-card-content>
+        <!-- Selector de tipo de transacción -->
+        <ion-item lines="none" class="transaction-type-selector ion-margin-bottom">
+          <ion-segment [(ngModel)]="expense.transaction" name="transactionType" class="ion-margin-vertical">
+            <ion-segment-button value="income">
+              <ion-icon name="arrow-down-circle-outline"></ion-icon>
+              <ion-label>Ingreso</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="spent">
+              <ion-icon name="arrow-up-circle-outline"></ion-icon>
+              <ion-label>Gasto</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-item>
+
+        <!-- Campo de monto -->
+        <ion-item lines="none" class="amount-input">
+          <ion-label position="stacked">Monto</ion-label>
+          <ion-input
+            type="number"
+            [(ngModel)]="expense.amount"
+            name="amount"
+            placeholder="0.00"
+            required
+            min="0.01"
+            class="ion-text-large ion-margin-top"
+            [class.invalid]="transactionForm.submitted && amountInput.invalid"
+            #amountInput="ngModel"
+          ></ion-input>
+          <ion-note color="danger" *ngIf="transactionForm.submitted && amountInput.invalid">
+            Por favor ingresa un monto válido
+          </ion-note>
+        </ion-item>
+
+        <!-- Selector de categoría (solo para gastos) -->
+        <ion-item lines="none" class="category-select ion-margin-top" *ngIf="expense.transaction === 'spent'">
+          <ion-label position="stacked">Categoría</ion-label>
+          <ion-select
+            [(ngModel)]="expense.category"
+            name="category"
+            required
+            interface="action-sheet"
+            class="ion-margin-top"
+            [class.invalid]="transactionForm.submitted && categorySelect.invalid"
+            #categorySelect="ngModel"
+          >
+            <ion-select-option *ngFor="let cat of categories; trackBy: trackByFn" [value]="cat.value">
+              <ion-icon [name]="cat.icon + '-outline'"></ion-icon>
+              {{ cat.label }}
+            </ion-select-option>
+          </ion-select>
+          <ion-note color="danger" *ngIf="transactionForm.submitted && categorySelect.invalid">
+            Por favor selecciona una categoría
+          </ion-note>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botones de acción -->
+    <div class="ion-padding">
+      <ion-button
+        expand="block"
+        type="submit"
+        class="ion-margin-bottom"
+        color="tertiary"
+        [disabled]="!transactionForm.form.valid"
+      >
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Guardar Transacción
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" (click)="cancel()">
+        Cancelar
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
