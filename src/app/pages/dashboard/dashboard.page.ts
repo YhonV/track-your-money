@@ -24,6 +24,7 @@ import { StorageService } from 'src/app/services/storageService/storage-service.
 import { Transaction } from 'src/app/models/interfaces';
 import { BehaviorSubject } from 'rxjs';
 import { AddtransactionComponent } from 'src/app/components/addtransaction/addtransaction.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,7 +51,8 @@ import { AddtransactionComponent } from 'src/app/components/addtransaction/addtr
     IonCol,
     IonNote,
     IonFab,
-    IonFabButton
+    IonFabButton,
+    NgxPaginationModule
   ]
 })
 export class DashboardPage implements OnInit {
@@ -59,7 +61,10 @@ export class DashboardPage implements OnInit {
   expenses: number = 0;
   balance: number = 0;
   transactions: Transaction[] = [];
-  
+  items: any[] = [];
+  currentPage: number = 1; 
+  itemsPerPage: number = 5;
+
   constructor(
     private modalCtrl: ModalController,
     private storageService: StorageService,
