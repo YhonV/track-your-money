@@ -29,66 +29,73 @@
     </ion-grid>
   </div>
   
-
   <!-- Recent Transactions -->
-<div class="transactions-card">
-  <div class="transactions-header">
-    <h2>Recent Transactions</h2>
-  </div>
-  
-  <div class="transactions-content">
-    <!-- Repeat for each transaction -->
-    <div class="transaction-item" 
-     *ngFor="let transaction of transactions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: transactions.length }"
-     [ngClass]="{
-       'income-background': transaction.type === 'income',
-       'expense-background': transaction.type !== 'income'
-     }">
-  <!-- Transaction with icon based on type -->
-  <div class="transaction-icon" [ngClass]="{'income-icon': transaction.type === 'income', 'expense-icon': transaction.type !== 'income'}">
-    <ion-icon [name]="transaction.type === 'income' ? 'wallet-outline' : 'cash-outline'"></ion-icon>
-  </div>
-  
-  <!-- Transaction details -->
-  <div class="transaction-details">
-    <div class="transaction-title">{{ transaction.category || 'Income' }}</div>
-    <div class="transaction-date">{{ transaction.date | date:'dd/MM HH:mm' }}</div>
-  </div>
-  
-  <!-- Transaction amount -->
-  <div class="transaction-amount" [ngClass]="{'income-amount': transaction.type === 'income', 'expense-amount': transaction.type !== 'income'}">
-    {{ transaction.amount | currency }}
-  </div>
-</div>
-    
-    <!-- Empty state -->
-    <div class="empty-transactions" *ngIf="!transactions.length">
-      <p>No transactions yet</p>
+  <div class="transactions-card">
+    <div class="transactions-header">
+      <h2>Recent Transactions</h2>
     </div>
-  </div>
-  
-  <!-- Pagination controls -->
-  <div class="pagination-controls">
-    <button class="pagination-button"><ion-icon name="chevron-back-outline"></ion-icon></button>
-    <div class="pagination-numbers">
-      <span class="pagination-number active">1</span>
-      <span class="pagination-number">2</span>
-      <span class="pagination-number">3</span>
-      <span class="pagination-number">...</span>
-    </div>
-    <button class="pagination-button"><ion-icon name="chevron-forward-outline"></ion-icon></button>
     
-    <!-- Add transaction button -->
-    <button class="add-transaction-button" (click)="openTransactionModal()">
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </div>
-  
-  <div class="view-all-link">VIEW ALL</div>
-</div>
-</ion-content>
+    <div class="transactions-content">
+      <!-- Repeat for each transaction -->
+      <div class="transaction-item" 
+        *ngFor="let transaction of transactions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: transactions.length }"
+        [ngClass]="{
+          'income-background': transaction.type === 'income',
+          'expense-background': transaction.type !== 'income'
+        }">
+        <!-- Transaction with icon based on type -->
+        <div class="transaction-icon" [ngClass]="{'income-icon': transaction.type === 'income', 'expense-icon': transaction.type !== 'income'}">
+          <ion-icon [name]="transaction.type === 'income' ? 'wallet-outline' : 'cash-outline'"></ion-icon>
+        </div>
+        
+        <!-- Transaction details -->
+        <div class="transaction-details">
+          <div class="transaction-title">{{ transaction.category || 'Income' }}</div>
+          <div class="transaction-date">{{ transaction.date | date:'dd/MM HH:mm' }}</div>
+        </div>
+        
+        <!-- Transaction amount -->
+        <div class="transaction-amount" [ngClass]="{'income-amount': transaction.type === 'income', 'expense-amount': transaction.type !== 'income'}">
+          {{ transaction.amount | currency }}
+        </div>
+      </div>
+      
+      <!-- Empty state -->
+      <div class="empty-transactions" *ngIf="!transactions.length">
+        <p>No transactions yet</p>
+      </div>
+    </div>
+    
+    <!-- Pagination controls -->
+    <div class="pagination-controls">
+      <button class="pagination-button" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      
+      <div class="pagination-numbers">
+        <ng-container *ngFor="let page of getPaginationArray()">
+          <span 
+            *ngIf="page !== '...'" 
+            class="pagination-number" 
+            [ngClass]="{'active': currentPage === page}" 
+            (click)="changePage(+page)">
+            {{ page }}
+          </span>
+          <span *ngIf="page === '...'" class="pagination-dots">...</span>
+        </ng-container>
+      </div>
+      
+      <button class="pagination-button" (click)="changePage(currentPage + 1)" [disabled]="currentPage === getPageCount()">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+      
+      <!-- Add transaction button -->
+      <button class="add-transaction-button" (click)="openTransactionModal()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </div>
 
-<pagination-controls 
-  (pageChange)="changePage($event)" 
-  style="display: none;">
-</pagination-controls>
+    <pagination-controls (pageChange)="changePage($event)" style="display: none;"></pagination-controls>
+    <div class="view-all-link" (click)="viewAllTransactions()">VIEW ALL</div>
+  </div>
+</ion-content>

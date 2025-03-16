@@ -2,27 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalController, AlertController, ToastController } from '@ionic/angular';
-import { IonContent } from '@ionic/angular/standalone';
-import {
-      IonCard, 
-      IonCardContent,
-      IonCardHeader, 
-      IonCardTitle, 
-      IonList, 
-      IonItem, 
-      IonIcon, 
-      IonLabel, 
-      IonGrid,
-      IonRow,
-      IonCol,
-      IonNote,
-      IonFab,
-      IonFabButton} from '@ionic/angular/standalone';
+import { IonContent, IonIcon, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { cashOutline, addCircleOutline, add, walletOutline, alertOutline, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
+import { cashOutline, add, walletOutline, alertOutline, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
 import { StorageService } from 'src/app/services/storageService/storage-service.service';
 import { Transaction } from 'src/app/models/interfaces';
-import { BehaviorSubject } from 'rxjs';
 import { AddtransactionComponent } from 'src/app/components/addtransaction/addtransaction.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -32,23 +16,13 @@ import { NgxPaginationModule } from 'ngx-pagination';
   styleUrls: ['./dashboard.page.scss'],
   standalone: true,
   imports: [
-    IonContent, 
-    CommonModule, 
-    FormsModule, 
-    IonCard,
-    IonCardContent,
-    IonCardHeader,
-    IonCardTitle,
-    IonList,
-    IonItem,
+    IonContent,
+    CommonModule,
+    FormsModule,
     IonIcon,
-    IonLabel,
     IonGrid,
-    IonRow,
+    IonRow, 
     IonCol,
-    IonNote,
-    IonFab,
-    IonFabButton,
     NgxPaginationModule
   ]
 })
@@ -68,7 +42,7 @@ export class DashboardPage implements OnInit {
     private alertCtrl: AlertController,
     private toastController: ToastController
   ) {
-    addIcons({chevronBackOutline,chevronForwardOutline,add,alertOutline,cashOutline,addCircleOutline,walletOutline});
+    addIcons({chevronBackOutline,chevronForwardOutline,add,alertOutline,cashOutline,walletOutline});
   }
 
   async ngOnInit() {
@@ -225,7 +199,12 @@ export class DashboardPage implements OnInit {
   }
 
   // Función para manejar el cambio de página
-  changePage(page: number) {
+  changePage(page: string | number) {
+    // Validar que la página esté dentro del rango válido
+    if (typeof page === 'string') {
+      return;
+    }
+    
     // Validar que la página esté dentro del rango válido
     if (page < 1 || page > this.getPageCount()) {
       return;
