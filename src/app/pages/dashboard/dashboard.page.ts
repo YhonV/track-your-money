@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalController, AlertController, ToastController } from '@ionic/angular';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
 import {
       IonCard, 
       IonCardContent,
@@ -33,9 +33,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
   standalone: true,
   imports: [
     IonContent, 
-    IonHeader, 
-    IonTitle, 
-    IonToolbar, 
     CommonModule, 
     FormsModule, 
     IonCard,

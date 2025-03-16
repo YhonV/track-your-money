@@ -15,10 +15,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/insight/insight.page').then( m => m.InsightPage)
   },
   {
-    path: 'planner',
-    loadComponent: () => import('./pages/planner/planner.page').then( m => m.PlannerPage)
-  },
-  {
     path: 'preferences',
     loadComponent: () => import('./pages/preferences/preferences.page').then( m => m.PreferencesPage)
   },

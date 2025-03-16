@@ -1,149 +1,80 @@
+.financial-dashboard {
+  padding: 8px;
+  
+  ion-grid {
+    --ion-grid-padding: 0;
+  }
+  
+  ion-row {
+    margin-bottom: 16px;
+  }
+  
+  ion-col {
+    padding: 8px;
+  }
+  
+  .card {
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 120px;
+    justify-content: center;
+  }
+  
+  .income-card {
+    background-color: rgba(76, 217, 100, 0.15);
+    
+    .card-title {
+      color: #4cd964;
+    }
+    
+    .card-amount {
+      color: #4cd964;
+    }
+  }
+  
+  .spent-card {
+    background-color: rgba(255, 59, 48, 0.15);
+    
+    .card-title {
+      color: #ff3b30;
+    }
+    
+    .card-amount {
+      color: #ff3b30;
+    }
+  }
+  
+  .balance-card {
+    background-color: rgba(88, 86, 214, 0.1);
+    
+    .card-title {
+      color: #5856d6;
+    }
+    
+    .card-amount {
+      color: #5856d6;
+    }
+  }
+  
+  .card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .card-amount {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+}
+
+// Additional global styles
 :host {
   ion-content {
-    --background: var(--ion-color-light);
+    --background: #f8f9fa;
   }
-
-  ion-card {
-    margin: 16px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-    ion-card-header {
-      padding: 16px;
-    }
-
-    ion-card-content {
-      padding: 0 16px 16px;
-    }
-  }
-
-  .balance-amount {
-    font-size: 32px;
-    font-weight: bold;
-    color: var(--ion-color-dark);
-  }
-
-  // dashboard.page.scss
-.amount-display {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 1rem 0;
 }
-
-ion-card {
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-ion-item {
-  --padding-start: 1rem;
-  --inner-padding-end: 1rem;
-}
-
-ion-note {
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-}
-// /* Título del Dashboard */
-//   .dashboard-title {
-//     text-align: center;
-//     font-weight: bold;
-//   }
-
-//   .d-flex-center {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     width: 100%;
-//   }
-
-//   .header-toolbar {
-//     --background: linear-gradient(to right, #4e54c8, #8f94fb);
-//     --color: white;
-//   }
-  
-//   .dashboard-title {
-//     text-align: center;
-//     font-weight: bold;
-//     font-size: 1.5rem;
-//   }
-
-//   .content-wrapper {
-//     padding: 20px;
-//   }
-  
-//   .balance-card, .expenses-card {
-//     margin-bottom: 20px;
-//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//     border-radius: 12px;
-//   }
-  
-//   .balance-card ion-card-header, .expenses-card ion-card-header {
-//     background-color: #f4f4f4;
-//     border-bottom: 1px solid #ddd;
-//   }
-  
-//   .balance-card ion-card-title, .expenses-card ion-card-title {
-//     color: #4e54c8;
-//     font-size: 1.2rem;
-//   }
-  
-//   .balance-card ion-card-content, .expenses-card ion-card-content {
-//     font-size: 1.5rem;
-//     color: #333;
-//   }
-
-//   ion-button {
-//     --background: #4e54c8;
-//     --color: white;
-//     --border-radius: 25px;
-//     --padding-start: 20px;
-//     --padding-end: 20px;
-//     transition: background-color 0.3s ease;
-//   }
-  
-//   ion-button:hover {
-//     --background: #8f94fb;
-//   }
-
-//   ion-list {
-//     background-color: transparent;
-//   }
-  
-//   ion-item {
-//     --padding-start: 10px;
-//     --padding-end: 10px;
-//     --min-height: 50px;
-//     margin-bottom: 10px;
-//     border-radius: 8px;
-//     background-color: #f9f9f9;
-//   }
-  
-//   ion-icon {
-//     color: #4e54c8;
-//   }
-
-//   .error-message {
-//     text-align: center;
-//     padding: 10px;
-//     background-color: #ffebee;
-//     color: #c62828;
-//     border-radius: 8px;
-//     margin: 20px;
-//   }
-
-//   @keyframes fadeIn {
-//     from {
-//       opacity: 0;
-//       transform: translateY(20px);
-//     }
-//     to {
-//       opacity: 1;
-//       transform: translateY(0);
-//     }
-//   }
-  
-//   .balance-card, .expenses-card, ion-button {
-//     animation: fadeIn 0.5s ease-out;
-//   }
