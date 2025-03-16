@@ -19,7 +19,7 @@ import {
       IonFab,
       IonFabButton} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { cashOutline, addCircleOutline, add, walletOutline, alertOutline } from 'ionicons/icons';
+import { cashOutline, addCircleOutline, add, walletOutline, alertOutline, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
 import { StorageService } from 'src/app/services/storageService/storage-service.service';
 import { Transaction } from 'src/app/models/interfaces';
 import { BehaviorSubject } from 'rxjs';
@@ -68,7 +68,7 @@ export class DashboardPage implements OnInit {
     private alertCtrl: AlertController,
     private toastController: ToastController
   ) {
-    addIcons({add,alertOutline,cashOutline,addCircleOutline,walletOutline});
+    addIcons({chevronBackOutline,chevronForwardOutline,add,alertOutline,cashOutline,addCircleOutline,walletOutline});
   }
 
   async ngOnInit() {
@@ -173,4 +173,75 @@ export class DashboardPage implements OnInit {
   async cleanTransactions() {
     this.storageService.clearStorage();
   }
+
+  // Función para calcular el número total de páginas
+getPageCount(): number {
+  return Math.ceil(this.transactions.length / this.itemsPerPage);
+}
+
+// Función para generar el array de paginación (1, 2, ..., n)
+getPaginationArray(): (number | string)[] {
+  const pageCount = this.getPageCount();
+  
+  // Si hay pocas páginas, mostrar todas
+  if (pageCount <= 5) {
+    return Array.from({ length: pageCount }, (_, i) => i + 1);
+  }
+  
+  // Si hay muchas páginas, mostrar 1, 2, ..., n-1, n
+  const pages: (number | string)[] = [];
+  
+  // Siempre mostrar la primera página
+  pages.push(1);
+  
+  // Mostrar páginas alrededor de la página actual
+  if (this.currentPage > 2) {
+    pages.push(2);
+  }
+  
+  if (this.currentPage > 3) {
+    pages.push('...');
+  }
+  
+  // Páginas cercanas a la actual
+  for (let i = Math.max(2, this.currentPage - 1); i <= Math.min(pageCount - 1, this.currentPage + 1); i++) {
+    if (i > 2 && i < pageCount - 1) {
+      pages.push(i);
+    }
+  }
+  
+  if (this.currentPage < pageCount - 2) {
+    pages.push('...');
+  }
+  
+  if (this.currentPage < pageCount - 1) {
+    pages.push(pageCount - 1);
+  }
+  
+  // Siempre mostrar la última página
+  pages.push(pageCount);
+  
+  return pages;
+}
+
+// Función para manejar el cambio de página
+changePage(page: number) {
+  // Validar que la página esté dentro del rango válido
+  if (page < 1 || page > this.getPageCount()) {
+    return;
+  }
+  
+  this.currentPage = page;
+}
+
+// Función para ver todas las transacciones (puedes implementarla como necesites)
+viewAllTransactions() {
+  // Por ejemplo, podrías navegar a una página de transacciones o mostrar un modal
+  console.log('Ver todas las transacciones');
+  
+  // Actualiza esta implementación según tus necesidades
+  this.itemsPerPage = this.transactions.length;
+  this.currentPage = 1;
+}
+
 }

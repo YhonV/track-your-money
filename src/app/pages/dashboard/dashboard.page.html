@@ -31,49 +31,64 @@
   
 
   <!-- Recent Transactions -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Recent Transactions</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-list lines="full">
-        <ion-item *ngFor="let transaction of transactions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: transactions.length }">
-          <ion-icon 
-            [name]="transaction.category ? 'cash-outline' : 'wallet-outline'" 
-            slot="start"
-            [color]="transaction.type === 'income' ? 'success' : 'danger'"
-          ></ion-icon>
-          <ion-label>
-            <h2>{{ transaction.category || 'Income' }}</h2>
-            <p>{{ transaction.date | date:'medium' }}</p>
-          </ion-label>
-          <ion-note 
-            slot="end" 
-            [color]="transaction.type === 'income' ? 'success' : 'danger'"
-          >
-            {{ transaction.amount | currency }}
-          </ion-note>
-        </ion-item>
-        
-        <ion-item *ngIf="!transactions.length" lines="none">
-          <ion-label class="ion-text-center">
-            No transactions yet
-          </ion-label>
-        </ion-item>
-      </ion-list>
-      <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="openTransactionModal()" color="tertiary">
+<div class="transactions-card">
+  <div class="transactions-header">
+    <h2>Recent Transactions</h2>
+  </div>
+  
+  <div class="transactions-content">
+    <!-- Repeat for each transaction -->
+    <div class="transaction-item" 
+     *ngFor="let transaction of transactions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: transactions.length }"
+     [ngClass]="{
+       'income-background': transaction.type === 'income',
+       'expense-background': transaction.type !== 'income'
+     }">
+  <!-- Transaction with icon based on type -->
+  <div class="transaction-icon" [ngClass]="{'income-icon': transaction.type === 'income', 'expense-icon': transaction.type !== 'income'}">
+    <ion-icon [name]="transaction.type === 'income' ? 'wallet-outline' : 'cash-outline'"></ion-icon>
+  </div>
+  
+  <!-- Transaction details -->
+  <div class="transaction-details">
+    <div class="transaction-title">{{ transaction.category || 'Income' }}</div>
+    <div class="transaction-date">{{ transaction.date | date:'dd/MM HH:mm' }}</div>
+  </div>
+  
+  <!-- Transaction amount -->
+  <div class="transaction-amount" [ngClass]="{'income-amount': transaction.type === 'income', 'expense-amount': transaction.type !== 'income'}">
+    {{ transaction.amount | currency }}
+  </div>
+</div>
+    
+    <!-- Empty state -->
+    <div class="empty-transactions" *ngIf="!transactions.length">
+      <p>No transactions yet</p>
+    </div>
+  </div>
+  
+  <!-- Pagination controls -->
+  <div class="pagination-controls">
+    <button class="pagination-button"><ion-icon name="chevron-back-outline"></ion-icon></button>
+    <div class="pagination-numbers">
+      <span class="pagination-number active">1</span>
+      <span class="pagination-number">2</span>
+      <span class="pagination-number">3</span>
+      <span class="pagination-number">...</span>
+    </div>
+    <button class="pagination-button"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+    
+    <!-- Add transaction button -->
+    <button class="add-transaction-button" (click)="openTransactionModal()">
       <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
-  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button (click)="cleanTransactions()" color="tertiary">
-      <ion-icon name="alert-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    </button>
+  </div>
+  
+  <div class="view-all-link">VIEW ALL</div>
+</div>
 </ion-content>
+
+<pagination-controls 
+  (pageChange)="changePage($event)" 
+  style="display: none;">
+</pagination-controls>

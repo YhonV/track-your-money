@@ -78,3 +78,235 @@
     --background: #f8f9fa;
   }
 }
+
+/* Estilos para el componente de transacciones */
+.transactions-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.transactions-header {
+  padding: 16px;
+  border-bottom: 1px solid #f5f5f5;
+  
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+  }
+}
+
+.transactions-content {
+  padding: 8px 0;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  position: relative;
+  transition: background-color 0.2s ease;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Fondos de transacciones usando clases en vez de :has() para mayor compatibilidad */
+.transaction-item.income-background {
+  background-color: rgba(76, 217, 100, 0.1);
+}
+
+.transaction-item.expense-background {
+  background-color: rgba(255, 59, 48, 0.1);
+}
+
+/* Usando el selector :has() como mejora progresiva */
+@supports selector(:has(.income-icon)) {
+  .transaction-item:has(.income-icon) {
+    background-color: rgba(76, 217, 100, 0.1);
+  }
+  
+  .transaction-item:has(.expense-icon) {
+    background-color: rgba(255, 59, 48, 0.1);
+  }
+}
+
+.transaction-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  border: 1.5px solid;
+  
+  ion-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.income-icon {
+  border-color: #4cd964;
+  color: #4cd964;
+}
+
+.expense-icon {
+  border-color: #ff3b30;
+  color: #ff3b30;
+}
+
+.transaction-details {
+  flex: 1;
+}
+
+.transaction-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.transaction-date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.transaction-amount {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.income-amount {
+  color: #4cd964;
+}
+
+.expense-amount {
+  color: #ff3b30;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+  border-top: 1px solid #f5f5f5;
+}
+
+.pagination-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  
+  ion-icon {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  &:hover {
+    background-color: #eee;
+  }
+  
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.pagination-numbers {
+  display: flex;
+  align-items: center;
+  margin: 0 8px;
+}
+
+.pagination-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 4px;
+  font-size: 0.85rem;
+  color: #555;
+  cursor: pointer;
+  
+  &.active {
+    background-color: #673ab7;
+    color: white;
+  }
+  
+  &:hover:not(.active) {
+    background-color: #f5f5f5;
+  }
+}
+
+.pagination-dots {
+  margin: 0 4px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.add-transaction-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #673ab7;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  right: 16px;
+  box-shadow: 0 3px 8px rgba(103, 58, 183, 0.3);
+  
+  ion-icon {
+    font-size: 24px;
+    color: white;
+  }
+  
+  &:hover {
+    background-color: #5e35b1;
+  }
+}
+
+.empty-transactions {
+  padding: 24px 16px;
+  text-align: center;
+  color: #888;
+}
+
+.view-all-link {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  
+  &:hover {
+    color: #673ab7;
+  }
+}
+
+/* Estilos para compatibilidad con Angular */
+:host ::ng-deep {
+  pagination-controls {
+    display: none;
+  }
+}
