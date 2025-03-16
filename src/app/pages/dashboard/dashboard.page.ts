@@ -175,73 +175,72 @@ export class DashboardPage implements OnInit {
   }
 
   // Función para calcular el número total de páginas
-getPageCount(): number {
-  return Math.ceil(this.transactions.length / this.itemsPerPage);
-}
+  getPageCount(): number {
+    return Math.ceil(this.transactions.length / this.itemsPerPage);
+  }
 
-// Función para generar el array de paginación (1, 2, ..., n)
-getPaginationArray(): (number | string)[] {
-  const pageCount = this.getPageCount();
-  
-  // Si hay pocas páginas, mostrar todas
-  if (pageCount <= 5) {
-    return Array.from({ length: pageCount }, (_, i) => i + 1);
-  }
-  
-  // Si hay muchas páginas, mostrar 1, 2, ..., n-1, n
-  const pages: (number | string)[] = [];
-  
-  // Siempre mostrar la primera página
-  pages.push(1);
-  
-  // Mostrar páginas alrededor de la página actual
-  if (this.currentPage > 2) {
-    pages.push(2);
-  }
-  
-  if (this.currentPage > 3) {
-    pages.push('...');
-  }
-  
-  // Páginas cercanas a la actual
-  for (let i = Math.max(2, this.currentPage - 1); i <= Math.min(pageCount - 1, this.currentPage + 1); i++) {
-    if (i > 2 && i < pageCount - 1) {
-      pages.push(i);
+  // Función para generar el array de paginación (1, 2, ..., n)
+  getPaginationArray(): (number | string)[] {
+    const pageCount = this.getPageCount();
+    
+    // Si hay pocas páginas, mostrar todas
+    if (pageCount <= 5) {
+      return Array.from({ length: pageCount }, (_, i) => i + 1);
     }
+    
+    // Si hay muchas páginas, mostrar 1, 2, ..., n-1, n
+    const pages: (number | string)[] = [];
+    
+    // Siempre mostrar la primera página
+    pages.push(1);
+    
+    // Mostrar páginas alrededor de la página actual
+    if (this.currentPage > 2) {
+      pages.push(2);
+    }
+    
+    if (this.currentPage > 3) {
+      pages.push('...');
+    }
+    
+    // Páginas cercanas a la actual
+    for (let i = Math.max(2, this.currentPage - 1); i <= Math.min(pageCount - 1, this.currentPage + 1); i++) {
+      if (i > 2 && i < pageCount - 1) {
+        pages.push(i);
+      }
+    }
+    
+    if (this.currentPage < pageCount - 2) {
+      pages.push('...');
+    }
+    
+    if (this.currentPage < pageCount - 1) {
+      pages.push(pageCount - 1);
+    }
+    
+    // Siempre mostrar la última página
+    pages.push(pageCount);
+    
+    return pages;
   }
-  
-  if (this.currentPage < pageCount - 2) {
-    pages.push('...');
-  }
-  
-  if (this.currentPage < pageCount - 1) {
-    pages.push(pageCount - 1);
-  }
-  
-  // Siempre mostrar la última página
-  pages.push(pageCount);
-  
-  return pages;
-}
 
-// Función para manejar el cambio de página
-changePage(page: number) {
-  // Validar que la página esté dentro del rango válido
-  if (page < 1 || page > this.getPageCount()) {
-    return;
+  // Función para manejar el cambio de página
+  changePage(page: number) {
+    // Validar que la página esté dentro del rango válido
+    if (page < 1 || page > this.getPageCount()) {
+      return;
+    }
+    
+    this.currentPage = page;
   }
-  
-  this.currentPage = page;
-}
 
-// Función para ver todas las transacciones (puedes implementarla como necesites)
-viewAllTransactions() {
-  // Por ejemplo, podrías navegar a una página de transacciones o mostrar un modal
-  console.log('Ver todas las transacciones');
-  
-  // Actualiza esta implementación según tus necesidades
-  this.itemsPerPage = this.transactions.length;
-  this.currentPage = 1;
-}
-
+  // Función para ver todas las transacciones (puedes implementarla como necesites)
+  viewAllTransactions() {
+    // Por ejemplo, podrías navegar a una página de transacciones o mostrar un modal
+    console.log('Ver todas las transacciones');
+    
+    // Actualiza esta implementación según tus necesidades
+    this.itemsPerPage = this.transactions.length;
+    this.currentPage = 1;
+  }
 }
