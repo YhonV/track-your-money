@@ -62,7 +62,6 @@ export class StorageService {
         total: total
       };
       
-      console.log('Balance calculado:', balance);
       return balance;
     } catch (error) {
       console.error('Error al calcular el balance:', error);
@@ -92,7 +91,6 @@ export class StorageService {
   
       // Calcular y mostrar el balance actualizado
       const balance = await this.getBalance();
-      console.log('Balance actualizado tras guardar:', balance);
     } catch (error) {
       console.error('Error guardando transacción:', error);
       throw error;

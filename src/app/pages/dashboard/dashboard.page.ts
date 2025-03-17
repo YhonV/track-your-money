@@ -70,13 +70,6 @@ export class DashboardPage implements OnInit {
       this.income = balanceData.income;
       this.expenses = balanceData.expenses;
       this.balance = balanceData.total;
-      
-      console.log('Datos cargados:', {
-        income: this.income,
-        expenses: this.expenses,
-        balance: this.balance,
-        transactions: this.transactions.length
-      });
     } catch (error) {
       console.error('Error cargando datos:', error);
     }
