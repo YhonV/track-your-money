@@ -205,14 +205,4 @@ export class DashboardPage implements OnInit {
     
     this.currentPage = page;
   }
-
-  // Función para ver todas las transacciones (puedes implementarla como necesites)
-  viewAllTransactions() {
-    // Por ejemplo, podrías navegar a una página de transacciones o mostrar un modal
-    console.log('Ver todas las transacciones');
-    
-    // Actualiza esta implementación según tus necesidades
-    this.itemsPerPage = this.transactions.length;
-    this.currentPage = 1;
-  }
 }

@@ -97,9 +97,7 @@ export class AddtransactionComponent  implements OnInit {
 
   }
 
-  ngOnInit() {
-    console.log('Categories:', this.categories);
-    console.log('Es array?:', Array.isArray(this.categories));  }
+  ngOnInit() {}
 
   isValid(): boolean {
     const isValidAmount = this.expense.amount > 0;
